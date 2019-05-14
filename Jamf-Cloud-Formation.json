@@ -1,0 +1,65 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS Cloud Formation For Jamf Pro",
+    "Parameters":{
+        "NumberOfAZs":{
+            "Type": "Number",
+            "AllowedValues":[
+                "1","2","3"
+            ]
+        }
+       
+    },
+    "Conditions":{
+        "BuildPublicB":"",
+        "BuildPublicC":""
+    },
+    "Resources":{
+        "VPC":{},
+        "Subnet":{},
+        "InternetGateway":{},
+        "AttachGateway":{},
+        "PublicSubnetA":{},
+        "PublicSubnetB":{
+            "Type":"",
+            "Condition":"BuildPublicB",
+            "Properties":{}
+        },
+        "PublicSubnetC":{
+            "Type":"",
+            "Condition":"BuildPublicC",
+            "Properties":{}
+        },
+        "PrivateSubnetA":{},
+        "PrivateSubnetB":{},
+        "PrivateSubnetC":{},
+        "PublicRouteTable":{},
+        "PublicIgwRoute1":{},
+        "PrivateRouteTable":{},
+        "PrivateNatRoute1":{},
+        "PublicSubnetARouteTableAssoc":{},
+        "PublicSubnetBRouteTableAssoc":{
+
+            "Type":"",
+            "Condition":"BuildPublicB",
+            "Properties":{}
+       
+        },
+        "PublicSubnetCRouteTableAssoc":{
+            "Type":"",
+            "Condition": "BuildPublicC",
+            "Properties": {}
+        },
+        "PrivateSubnetARouteTableAssoc":{},
+        "PrivateSubnetBRouteTableAssoc":{},
+        "PrivateSubnetCRouteTableAssoc":{},
+        "NATGateway":{},
+        "ElasticIPAddress":{}
+
+
+
+
+    }
+    
+
+}
