@@ -1,75 +1,141 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "AWS Cloud Formation For Jamf Pro",
-    "Parameters":{
-        "NumberOfAZs":{
+    "Parameters": {
+        "NumberOfAZs": {
             "Type": "Number",
-            "AllowedValues":[
-                "1","2","3"
+            "AllowedValues": [
+                "1", "2", "3"
             ]
         },
-        "PrivateSubnets":{
+        "PrivateSubnets": {
             "Type": "String",
-            "AllowedValues":["True", "False"],
+            "AllowedValues": ["True", "False"],
             "Default": "True",
-            "Description":"Do You Want to Create Private Subnets in Addition to Public Subnets?"
+            "Description": "Do You Want to Create Private Subnets in Addition to Public Subnets?"
+        },
+        "NumberOfLayers": {
+            "Type": "Number",
+            "AllowedValues": [
+                "1", "2", "3"
+            ]
         }
-       
-    },
-    "Conditions":{
-        "BuildPublicB":"",
-        "BuildPublicC":"",
-        "BuildPrivateSubnets":"",
-        "BuildPrivateA":"",
-        "BuildPrivateB":"",
-        "BuildPrivateC":""
-    },
-    "Resources":{
-        "VPC":{},
-        "Subnet":{},
-        "InternetGateway":{},
-        "AttachGateway":{},
-        "PublicSubnetA":{},
-        "PublicSubnetB":{
-            "Type":"",
-            "Condition":"BuildPublicB",
-            "Properties":{}
-        },
-        "PublicSubnetC":{
-            "Type":"",
-            "Condition":"BuildPublicC",
-            "Properties":{}
-        },
-        "PrivateSubnetA":{},
-        "PrivateSubnetB":{},
-        "PrivateSubnetC":{},
-        "PublicRouteTable":{},
-        "PublicIgwRoute1":{},
-        "PrivateRouteTable":{},
-        "PrivateNatRoute1":{},
-        "PublicSubnetARouteTableAssoc":{},
-        "PublicSubnetBRouteTableAssoc":{
 
-            "Type":"",
-            "Condition":"BuildPublicB",
-            "Properties":{}
-       
+    },
+    "Conditions": {
+        "BuildPublicB": "!Not [ !Equals [ !Ref NumberOfAZs, 1 ]]",
+        "BuildPublicC": "!Equals [ !Ref NumberOfAZs ]]",
+        "BuildPrivateSubnets": "!EQUALS [ !Ref PrivateSubnets, True ]",
+        "BuildPrivateB": "!AND  [!NOT [ !EQUALS [ !Ref NumberOfAZs, 1] ],[!EQUALS [ !Ref PrivateSubnets, True]",
+        "BuildPrivateC": "!AND[ !NOT [ !EQUALS [ !Ref NumberOfAZs, 2] ], [!EQUALS [ !Ref PrivateSubnets, True]"
+    },
+    "Resources": {
+        "VPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": "10.1.0.0/16",
+                "EnableDnsSupport": true,
+                "EnableDnsHostname": true,
+                "Tags": {
+                    "Key": "Name",
+                    "Value": "!Sub ${AWS::StackName}-VPC"
+                }
+            }
         },
-        "PublicSubnetCRouteTableAssoc":{
-            "Type":"",
+
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "DependsOn": "VPC"
+        },
+        "AttachGateway": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": "!Ref VPC",
+                "InternetGatewayId": "!Ref InternetGateway"
+            }
+        },
+        "Subnet": {},
+        "PublicSubnetA1": {},
+        "PublicSubnetB1": {},
+        "PublicSubnetC1": {},
+        "PublicSubnetA2": {
+            "Type": "",
+            "Condition": "BuildPublicB",
+            "Properties": {}
+        },
+        "PublicSubnetB2": {
+            "Type": "",
+            "Condition": "BuildPublicB",
+            "Properties": {}
+        },
+        "PublicSubnetC2": {
+            "Type": "",
             "Condition": "BuildPublicC",
             "Properties": {}
         },
-        "PrivateSubnetARouteTableAssoc":{},
-        "PrivateSubnetBRouteTableAssoc":{},
-        "PrivateSubnetCRouteTableAssoc":{},
-        "NATGateway":{},
-        "ElasticIPAddress":{}
 
+        "PublicSubnetA3": {
+            "Type": "",
+            "Properties": {}
+        },
+        "PublicSubnetB3": {
+            "Type": "",
+            "Condition": "BuildPublicB",
+            "Properties": {}
+        },
+        "PublicSubnetC3": {
+            "Type": "",
+            "Condition": "BuildPublicC",
+            "Properties": {}
+        },
+        "PrivateSubnetA1": {},
+        "PrivateSubnetB1": {},
+        "PrivateSubnetC1": {},
+        "PrivateSubnetA2": {},
+        "PrivateSubnetB2": {},
+        "PrivateSubnetC2": {},
+        "PrivateSubnetA3": {},
+        "PrivateSubnetB3": {},
+        "PrivateSubnetC3": {},
+        "PublicRouteTable": {},
+        "PublicIgwRoute1": {},
+        "PrivateRouteTable": {},
+        "PrivateNatRoute1": {},
+        "PublicSubnetA1RouteTableAssoc": {},
+        "PublicSubnetB1RouteTableAssoc": {
 
+            "Type": "",
+            "Condition": "BuildPublicB",
+            "Properties": {}
 
+        },
+        "PublicSubnetC1RouteTableAssoc": {
+            "Type": "",
+            "Condition": "BuildPublicC",
+            "Properties": {}
+        },
+        "PublicSubnetA23RouteTableAssoc": {},
+        "PublicSubnetB23RouteTableAssoc": {
 
+            "Type": "",
+            "Condition": "BuildPublicB",
+            "Properties": {}
+
+        },
+        "PublicSubnetC23RouteTableAssoc": {
+            "Type": "",
+            "Condition": "BuildPublicC",
+            "Properties": {}
+        },
+        "PrivateSubnetA1RouteTableAssoc": {},
+        "PrivateSubnetB1RouteTableAssoc": {},
+        "PrivateSubnetC1RouteTableAssoc": {},
+        "PrivateSubnetA23RouteTableAssoc": {},
+        "PrivateSubnetB23RouteTableAssoc": {},
+        "PrivateSubnetC23RouteTableAssoc": {},
+        "NATGateway": {},
+        "ElasticIPAddress": {}
     }
-    
+
 
 }
