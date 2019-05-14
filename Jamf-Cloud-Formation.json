@@ -7,12 +7,22 @@
             "AllowedValues":[
                 "1","2","3"
             ]
+        },
+        "PrivateSubnets":{
+            "Type": "String",
+            "AllowedValues":["True", "False"],
+            "Default": "True",
+            "Description":"Do You Want to Create Private Subnets in Addition to Public Subnets?"
         }
        
     },
     "Conditions":{
         "BuildPublicB":"",
-        "BuildPublicC":""
+        "BuildPublicC":"",
+        "BuildPrivateSubnets":"",
+        "BuildPrivateA":"",
+        "BuildPrivateB":"",
+        "BuildPrivateC":""
     },
     "Resources":{
         "VPC":{},
